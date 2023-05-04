@@ -1,0 +1,28 @@
+name: x pkg build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      github_token: ${{ secrets.MINIMUM_PRIVILEGE_TOKEN }}
+      ssh_key: ${{ secrets.REPO_SSH_KEY }}
+      git_user: tzw-my
+      git_email: tzw@x-cmd.com
+      repo_name: zig
+    steps:
+      - name: main
+        uses: x-cmd/action@main
+        with:
+          code: |
+            x gh token $github_token
+            git clone git@github.com:x-cmd-pkg/yanfa.git
+            [ -f ./yanfa/.x-cmd/index ] || ls
+            . ./yanfa/.x-cmd/index || true
